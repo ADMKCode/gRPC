@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package com.perficient.grpcdemo.interfaces;
+
+option java_multiple_files = true;
+option java_package = "com.perficient.grpcdemo.interfaces";
+option java_outer_classname = "ChatServiceProto";
+
+service ChatService {
+  //Unario
+  rpc enviarMensaje(EnviarMensaje) returns (RecibirMensaje) {}
+
+  //Stream unidireccional cliente->servidor
+  //Método en el servidor
+  rpc enviarMultiplesMensajes(stream EnviarMensaje) returns (RecibirMensaje) {}
+
+  //stream unidireccional servidor->cliente
+  //Método en el cliente
+  rpc recibirMultiplesRespuestas(EnviarMensaje) returns (stream RecibirMensaje) {}
+
+  //stream bidireccional
+  rpc enviarRecibirMultiplesMensajes(stream EnviarMensaje) returns (stream RecibirMensaje) {}
+}
+
+message EnviarMensaje{
+  uint32 to = 1;
+  string message = 2;
+}
+
+message RecibirMensaje{
+  uint32 from = 1;
+  string message = 2;
+}
